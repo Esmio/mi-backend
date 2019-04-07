@@ -28,7 +28,7 @@ module.exports = app => {
   router.post('/login', controller.site.loginWithUnPw);
   router.get('/', controller.site.index);
   router.post('/logout', controller.site.logout);
-  // router.post('/sendVerifyCode', controller.site.sendVerifyCode);
+  router.post('/sendVerifyCode', controller.site.sendVerifyCode);
 
   router.post('/api/v1/admin/product', controller.adminProduct.createNewProduct);
 

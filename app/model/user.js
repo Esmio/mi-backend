@@ -10,8 +10,7 @@ const randomBytesP = promisify(randomBytes);
 
 async function genEncryptedPassword(rawPassword, salt) {
   if (!salt) salt = await randomBytesP(32);
-  const encrypted = await pbkdf2P(rawPassword, salt.toString('base64'), 10000,
-    128, 'sha512');
+  const encrypted = await pbkdf2P(rawPassword, salt.toString('base64'), 10000, 128, 'sha512');
   return {
     encrypted: encrypted.toString('base64'),
     salt: salt.toString('base64'),
@@ -44,11 +43,11 @@ module.exports = app => {
     }, {
       indexes: [
         {
-          fields: ['username'],
+          fields: [ 'username' ],
           unique: true,
         },
         {
-          fields: ['phoneNumber'],
+          fields: [ 'phoneNumber' ],
         },
       ],
     });
@@ -70,8 +69,8 @@ module.exports = app => {
   };
 
   Model.loginWithUnPw = async (username, password) => {
-    const [found] = await Model.findAll({
-      attributes: ['id', 'password', 'salt'],
+    const [ found ] = await Model.findAll({
+      attributes: [ 'id', 'password', 'salt' ],
       where: {
         username: {
           [Op.eq]: username,
@@ -89,9 +88,7 @@ module.exports = app => {
 
     const foundPassword = found.password;
 
-    const { encrypted: reEncryptedPassword } = await genEncryptedPassword(password,
-      found.salt);
-    
+    const { encrypted: reEncryptedPassword } = await genEncryptedPassword(password, found.salt);
     if (foundPassword !== reEncryptedPassword) {
       throw new app.error.InvalidParam(
         'username or password',

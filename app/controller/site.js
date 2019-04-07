@@ -20,18 +20,18 @@ class SiteController extends Controller {
 
   async getUser() {
     this.ctx.body = {
-      'code': 0,
-      'result': 'ok',
-      'description': 'success',
-      'data': {
-        'send_order': 1,
-        'unpaid_order': 2,
-        'user': {
-          'email': '',
-          'icon': '//www.baidu.com/s?wd=%E4%BB%8A%E6%97%A5%E6%96%B0%E9%B2%9C%E4%BA%8B&tn=SE_PclogoS_8whnvm25&sa=ire_dl_gh_logo&rsv_dl=igh_logo_pcs',
-          'mobile': '131****4068',
-          'userName': 'tony',
-          'user_id': 1313124239,
+      code: 0,
+      result: 'ok',
+      description: 'success',
+      data: {
+        send_order: 1,
+        unpaid_order: 2,
+        user: {
+          email: '',
+          icon: '//www.baidu.com/s?wd=%E4%BB%8A%E6%97%A5%E6%96%B0%E9%B2%9C%E4%BA%8B&tn=SE_PclogoS_8whnvm25&sa=ire_dl_gh_logo&rsv_dl=igh_logo_pcs',
+          mobile: '131****4068',
+          userName: 'tony',
+          user_id: 1313124239,
         },
       },
     };
@@ -40,8 +40,7 @@ class SiteController extends Controller {
   async loginWithUnPw() {
     const { username, password } = this.ctx.request.body;
 
-    const foundUser = await this.ctx.service.user.loginWithUnPw(username,
-      password);
+    const foundUser = await this.ctx.service.user.loginWithUnPw(username, password);
 
     this.ctx.session.user = { id: foundUser.id };
 
@@ -67,6 +66,25 @@ class SiteController extends Controller {
 
   async logout() {
     if (this.ctx.session.user) this.ctx.session.user = undefined;
+    this.ctx.body = {
+      code: 0,
+    };
+  }
+
+  async sendVerifyCode() {
+    const { phoneNumber } = this.ctx.request.body;
+
+    const codeCoolingDown = await this.app.redis.get(`egg_mi_phone_verify_code_cool_down${phoneNumber}`);
+
+    if (codeCoolingDown) {
+      throw new Error('冷却中');
+    }
+
+    this.app.redis.set(`egg_mi_phone_verify_code_cool_down${phoneNumber}`, 'anything', 'PX', 60 * 1000);
+
+    const verifyCode = Math.ceil(Math.random() * 100000);
+    await this.app.redis.set(`egg_mi_phone_verify_code:phone${phoneNumber}`, verifyCode, 'PX', 5 * 60 * 1000);
+    // this.verify
     this.ctx.body = {
       code: 0,
     };

@@ -21,7 +21,7 @@ module.exports = appInfo => {
     host: 'localhost',
     database: 'mi_local_test',
     port: 5432,
-    username: 'lurenlaoyang',
+    username: 'simon',
     password: '',
     pool: {
       max: 10,
