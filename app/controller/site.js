@@ -28,7 +28,7 @@ class SiteController extends Controller {
         unpaid_order: 2,
         user: {
           email: '',
-          icon: '//www.baidu.com/s?wd=%E4%BB%8A%E6%97%A5%E6%96%B0%E9%B2%9C%E4%BA%8B&tn=SE_PclogoS_8whnvm25&sa=ire_dl_gh_logo&rsv_dl=igh_logo_pcs',
+          icon: '//s1.mi-img.com/mfsv2/download/fdsc3/p01EqaJOqAcW/Iyi86dNydBoYWa.jpg',
           mobile: '131****4068',
           userName: 'tony',
           user_id: 1313124239,
@@ -38,14 +38,15 @@ class SiteController extends Controller {
   }
 
   async loginWithUnPw() {
-    const { username, password } = this.ctx.request.body;
+    const { username, pwd } = this.ctx.request.body;
 
-    const foundUser = await this.ctx.service.user.loginWithUnPw(username, password);
+    const foundUser = await this.ctx.service.user.loginWithUnPw(username, pwd);
 
     this.ctx.session.user = { id: foundUser.id };
 
     this.ctx.body = {
       code: 0,
+      status: 200,
       data: {
         attempt: this.ctx.session.attempts,
         user: {

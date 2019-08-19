@@ -40,6 +40,12 @@ module.exports = app => {
       phoneNumber: {
         type: STRING(32),
       },
+      icon: {
+        type: TEXT,
+      },
+      email: {
+        type: STRING(64),
+      },
     }, {
       indexes: [
         {
@@ -100,6 +106,38 @@ module.exports = app => {
     return {
       id: found.id,
     };
+  };
+
+  Model.getUser = async (userId, select) => {
+    const [ found ] = await Model.findAll({
+      attributes: select,
+      where: {
+        id: {
+          [Op.eq]: userId,
+        },
+      },
+    });
+
+    if (!found) {
+      throw new app.error.InvalidParam(
+        'userId',
+        'no such userId',
+        '用户不存在'
+      );
+    }
+
+    return found;
+  };
+
+  Model.updateUserById = async (userId, user) => {
+    const result = await Model.update(user, {
+      where: {
+        id: {
+          [Op.eq]: userId,
+        },
+      },
+    });
+    return result;
   };
 
   Model.sync();
