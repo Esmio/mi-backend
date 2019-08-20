@@ -41,12 +41,18 @@ module.exports = appInfo => {
   config.onerror = {
     json(err, ctx) {
       const { code, httpStatusCode, httpMsg } = err;
-      if (httpStatusCode) ctx.statusCode = httpStatusCode;
+      if (httpStatusCode) ctx.status = httpStatusCode;
       ctx.body = {
         code,
         msg: httpMsg,
       };
     },
+  };
+
+  config.middleware = [ 'userAuth' ];
+
+  config.userAuth = {
+    match: [ '/api/v1/user', '/api/v1/address' ],
   };
 
   return config;

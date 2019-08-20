@@ -50,7 +50,7 @@ module.exports = app => {
 
   Model.listProducts = async query => {
     const { ids, last_id, sort, limit } = query;
-
+    console.log(sort);
     const sequelizeQuery = {};
 
     sequelizeQuery.where = {};

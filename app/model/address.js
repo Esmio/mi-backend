@@ -71,6 +71,18 @@ module.exports = app => {
     const sequelizeQuery = {};
     sequelizeQuery.where = {};
 
+    if (ids) {
+      if (ids.length === 1) {
+        sequelizeQuery.where.id = {
+          [Op.eq]: ids[0],
+        };
+      } else {
+        sequelizeQuery.where.id = {
+          [Op.in]: ids,
+        };
+      }
+    }
+
     if (last_id) {
       sequelizeQuery.where.id = {
         [Op.gt]: last_id,

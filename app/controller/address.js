@@ -5,7 +5,7 @@ class AddressController extends Controller {
   async createNewAddress() {
     const address = this.ctx.request.body;
     address.user_id = this.ctx.session.user.id;
-    address.is_default = !!address.is_default;
+    address.is_default = address.is_default === 1;
     const created = await this.ctx.service.address.createNewAddress(address);
     this.ctx.body = {
       code: 0,
