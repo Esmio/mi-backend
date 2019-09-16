@@ -129,6 +129,18 @@ module.exports = app => {
     return found;
   };
 
+  Model.getUserByPhoneNumber = async (phoneNumber, select) => {
+    const [ found ] = await Model.findAll({
+      attributes: select,
+      where: {
+        phoneNumber: {
+          [Op.eq]: phoneNumber,
+        },
+      },
+    });
+    return found;
+  };
+
   Model.updateUserById = async (userId, user) => {
     const result = await Model.update(user, {
       where: {

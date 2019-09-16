@@ -46,8 +46,17 @@ module.exports = app => {
   router.get('/api/v1/site/', controller.site.index);
   router.post('/api/v1/site/user', controller.site.createUser);
   router.post('/api/v1/site/login', controller.site.loginWithUnPw);
-  // router.post('/api/v1/site/sendVerifyCode', controller.site.sendVerifyCode);
+  router.post('/api/v1/site/sendVerifyCode', controller.site.sendVerifyCode);
 
   router.get('/api/v1/site/product/:id', controller.product.getProduct);
+  router.get('/api/v1/site/nav', controller.site.navList);
+  router.get('/api/v1/site/home', controller.site.homePage);
+  router.get('/api/v1/site/category', controller.site.category);
+  // 购物车中推荐
+  router.get('/api/v1/site/forRecommend', controller.site.forRecommend);
+  // 商品页面推荐
+  router.get('/api/v1/site/recommend', controller.site.recommend);
+
+  router.get('/api/v1/site/estDelivery', controller.site.estDelivery);
 
 };

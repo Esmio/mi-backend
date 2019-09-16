@@ -21,6 +21,13 @@ class Address extends Service {
     return result;
   }
 
+  async getAddressDetail(id) {
+    const [ address ] = await this.listAddresses({ ids: [ id ] });
+    return {
+      address,
+    };
+  }
+
 }
 
 module.exports = Address;

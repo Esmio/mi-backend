@@ -48,13 +48,13 @@ module.exports = app => {
       type: BOOLEAN,
     },
     market_price: {
-      type: STRING(16),
+      type: INTEGER,
     },
     price: {
-      type: STRING(16),
+      type: INTEGER,
     },
     reduce_price: {
-      type: STRING(16),
+      type: INTEGER,
     },
   });
 
@@ -67,9 +67,15 @@ module.exports = app => {
   };
 
   Model.listGoods = async query => {
-    const { last_id, limit, product_id } = query;
+    const { ids, last_id, limit, product_id } = query;
     const sequelizeQuery = {};
     sequelizeQuery.where = {};
+
+    if (ids) {
+      sequelizeQuery.where.id = {
+        [Op.in]: ids,
+      };
+    }
 
     if (product_id) {
       sequelizeQuery.where.product_id = {
