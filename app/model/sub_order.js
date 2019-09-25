@@ -71,13 +71,20 @@ module.exports = app => {
   };
 
   Model.listOrders = async query => {
-    const { ids, last_id, sort, limit } = query;
+    const { ids, last_id, sort, limit, order_ids } = query;
     console.log(ids, sort);
     const sequelizeQuery = {};
     sequelizeQuery.where = {};
+
     if (last_id) {
       sequelizeQuery.where.id = {
         [Op.gt]: last_id,
+      };
+    }
+
+    if (order_ids) {
+      sequelizeQuery.where.order_id = {
+        [Op.in]: order_ids,
       };
     }
 

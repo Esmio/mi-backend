@@ -1,7 +1,49 @@
 'use strict';
+
+const moment = require('moment');
+
 const { Controller } = require('egg');
 
 class OrderController extends Controller {
+
+  async orderCheckOut() {
+
+    const userId = this.ctx.session.user.id;
+
+    const cartItems = await this.ctx.service.cart.listItems({ user_id: userId });
+
+    const address = (await this.ctx.service.address.listAddresses({ user_ids: [ userId ], limit: 1 }))[0].toJSON();
+
+    address.address_id = address.id;
+
+    this.ctx.body = {
+      code: 0,
+      status: 200,
+      data: {
+        cartlist: {
+          items: cartItems.map(i => {
+            return {
+              goodsId: i.goods_id,
+              image_url: i.img_url,
+              num: i.nums,
+              short_name: i.name,
+              subtotal: i.price * i.nums,
+            };
+          }),
+        },
+        address,
+        paymethod: [
+          {
+            checked: 1,
+            subtitle: '支付订单，赢1999元红包,绑新卡支付，享最高立减99元,,,新用户首单享6期免息',
+            type: 'weixin_wap',
+            value: '微信支付',
+          },
+        ],
+      },
+    };
+  }
+
   async createNewOrder() {
     const { products, addressId, bestShipTime } = this.ctx.request.body;
     let goods = await this.ctx.service.goods.listGoods({ ids: products.map(p => p.id) });
@@ -43,11 +85,30 @@ class OrderController extends Controller {
   async listOrders() {
     const { query } = this.ctx.request;
     const orders = await this.ctx.service.order.listOrders(query);
+
+    const list = orders.map(o => {
+      return {
+        order_id: o.id,
+        order_status: o.status,
+        order_amount: o.goods_amount,
+        add_time: moment(o.created_at).format('YYYY/MM/DD  HH:mm:ss'),
+        order_status_info: '等待付款',
+        product: o.subOrders.map(s => {
+          return {
+            goods_id: s.goods_id,
+            image_url: '//i1.mifile.cn/a1/pms_1527060327.66235934!180x1800.jpg',
+            product_name: s.name,
+            product_count: s.nums,
+          };
+        }),
+      };
+    });
+
     this.ctx.body = {
       code: 0,
       status: 200,
       data: {
-        orders,
+        list,
       },
     };
   }
@@ -56,13 +117,28 @@ class OrderController extends Controller {
     const query = {
       ids: [ id ],
     };
-    const [ order ] = await this.ctx.service.order.listOrders(query);
+    const [ o ] = await this.ctx.service.order.listOrders(query);
+
+    const obj = {
+      order_id: o.id,
+      order_status: o.status,
+      order_amount: o.goods_amount,
+      add_time: moment(o.created_at).format('YYYY/MM/DD  HH:mm:ss'),
+      order_status_info: '等待付款',
+      product: o.subOrders.map(s => {
+        return {
+          goods_id: s.goods_id,
+          image_url: '//i1.mifile.cn/a1/pms_1527060327.66235934!180x1800.jpg',
+          product_name: s.name,
+          product_count: s.nums,
+        };
+      }),
+    };
+
     this.ctx.body = {
       code: 0,
       status: 200,
-      data: {
-        order,
-      },
+      data: obj,
     };
   }
 

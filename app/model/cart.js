@@ -70,13 +70,20 @@ module.exports = app => {
   };
 
   Model.listItems = async query => {
-    const { ids, last_id, sort, limit } = query;
+    const { ids, last_id, sort, limit, user_id } = query;
     console.log(ids, sort);
     const sequelizeQuery = {};
     sequelizeQuery.where = {};
+
     if (last_id) {
       sequelizeQuery.where.id = {
         [Op.gt]: last_id,
+      };
+    }
+
+    if (user_id) {
+      sequelizeQuery.where.user_id = {
+        [Op.eq]: user_id,
       };
     }
 
