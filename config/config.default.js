@@ -59,5 +59,9 @@ module.exports = appInfo => {
     match: [ '/api/v1/admin' ],
   };
 
+  config.rabbitmq = {
+    url: 'amqp://localhost:5672',
+  };
+
   return config;
 };

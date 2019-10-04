@@ -36,7 +36,8 @@ class Inventory extends Service {
     return lockedAmount;
   }
 
-  async removeLocksByGoodsId(goodsId, subOrderId) {
+  async removeLocksByGoodsId(goodsId, subOrderId, amount) {
+    console.log('amount', amount); // TODO
     const locksKey = Inventory.REDIS_GOODS_LOCKS_PREF + goodsId;
     const locksByOrderHsetKey = Inventory.REDIS_GOODS_LOCKS_BY_ORDER_PREF + goodsId;
     const locksExpKey = Inventory.REDIS_GOODS_LOCKS_BY_ORDER_EXPIRE_PREF + goodsId + ':' + subOrderId;
