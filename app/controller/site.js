@@ -67,6 +67,10 @@ class SiteController extends Controller {
     await this.ctx.service.msgProducer.sendInventoryUnlockMsg({
       goodsId: '111',
       subOrderId: '2222',
+    }, {
+      headers: {
+        'x-delay': 5000,
+      },
     });
     this.ctx.body = {
       code: 0,

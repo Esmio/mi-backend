@@ -21,8 +21,8 @@ module.exports = appInfo => {
     host: 'localhost',
     database: 'mi_local_test',
     port: 5432,
-    username: 'simon',
-    password: '',
+    username: 'username',
+    password: '7762345',
     pool: {
       max: 10,
       min: 1,
@@ -49,7 +49,7 @@ module.exports = appInfo => {
     },
   };
 
-  config.middleware = [ 'userAuth', 'adminAuth' ];
+  config.middleware = [ 'userAuth' ];
 
   config.userAuth = {
     match: [ '/api/v1/user', '/api/v1/address', '/api/v1/cart', '/api/v1/order' ],
@@ -60,7 +60,7 @@ module.exports = appInfo => {
   };
 
   config.rabbitmq = {
-    url: 'amqp://localhost:5672',
+    url: 'amqp://localhost',
   };
 
   return config;

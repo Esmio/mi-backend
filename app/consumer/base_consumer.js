@@ -14,8 +14,8 @@ class BaseConsumer {
   }
 
   async initConn() {
-    this.conn = await rmq.connect(this.app.config.rabbitmq.url);
-    console.log(this.conn);
+    const conn = await rmq.connect(this.app.config.rabbitmq.url);
+    this.conn = conn;
   }
 
   async initChannel() {
