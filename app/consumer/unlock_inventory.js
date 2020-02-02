@@ -11,6 +11,7 @@ class UnlockInventory extends BaseConsumer {
 
   onMsg(msg) {
     const inventoryInfo = JSON.parse(msg.content.toString('utf-8'));
+    console.log('inventoryInfo', inventoryInfo);
     const ctx = this.app.createAnonymousContext();
     ctx.service.inventory.removeLocksByGoodsId(inventoryInfo.goodsId, inventoryInfo.subOrderId)
       .catch(console.log);

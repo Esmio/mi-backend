@@ -66,6 +66,22 @@ class Order extends Service {
     return createdOrder;
   }
 
+  async createWXOrder() {
+    console.log('createWXOrder');
+  }
+
+  async updateOrderStatusFromWX() {
+    console.log('updateOrderStatusFromWX');
+  }
+
+  async createAliPayOrder() {
+    console.log('createAliPayOrder');
+  }
+
+  async createUnionPayOrder() {
+    console.log('createUnionPayOrder');
+  }
+
   async listOrders(query) {
     let orders = await this.app.model.Order.listOrders(query);
     const order_ids = orders.map(o => o.id);

@@ -21,8 +21,8 @@ module.exports = appInfo => {
     host: 'localhost',
     database: 'mi_local_test',
     port: 5432,
-    username: 'username',
-    password: '7762345',
+    username: '',
+    password: '',
     pool: {
       max: 10,
       min: 1,
@@ -62,6 +62,8 @@ module.exports = appInfo => {
   config.rabbitmq = {
     url: 'amqp://localhost',
   };
+
+  config.wechat = require('../secret/wechat');
 
   return config;
 };

@@ -72,10 +72,27 @@ class SiteController extends Controller {
         'x-delay': 5000,
       },
     });
+    const token = await this.ctx.service.wechat.getATFromWC();
+    const openIdResult = await this.ctx.service.wechat.getUserListFromWC();
+    const userInfo = await this.ctx.service.wechat.getUserInfo(this.ctx.request.query.openId);
+    // const sendMsgResult = await this.ctx.service.wechat.sendCSMsgToUser(this.ctx.request.query.openId);
+    const sendTempateResult = await this.ctx.service.wechat.sendTemplateMsgToUser({
+      openId: this.ctx.request.query.openId,
+      templateId: 'LW0wDOGErtKUr3MR6Wv-yavaUZ6GiD2oDAXubDqU99U',
+      data: {
+        orderId: { value: 'mock_order id' },
+      },
+      url: 'http://dongxiaoming.com',
+    });
     this.ctx.body = {
       code: 0,
       data: {
         hasLogin: !!this.ctx.session.user,
+        token,
+        openIdResult,
+        userInfo,
+        // sendMsgResult,
+        sendTempateResult,
       },
     };
   }

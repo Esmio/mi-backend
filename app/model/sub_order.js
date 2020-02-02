@@ -43,6 +43,15 @@ module.exports = app => {
     mode: {
       type: INTEGER,
     },
+    package_company: {
+      type: TEXT,
+    },
+    package_num: {
+      type: STRING,
+    },
+    package_info: {
+      type: STRING(16),
+    },
   });
 
   Model.createSubOrders = async ({ order_id, goods, user_id, transaction }) => {
